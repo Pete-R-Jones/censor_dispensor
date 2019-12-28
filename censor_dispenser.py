@@ -124,5 +124,36 @@ def censor_3(censor_phrases, negative_words, document):
             j += 1
     return " ".join(document_words)
 
-print(censor_3(proprietary_terms, negative_words, email_three))
+# print(censor_3(proprietary_terms, negative_words, email_three))
 
+def censor_4(censor_phrases, negative_words, document):
+    initial = censor_3(censor_phrases, negative_words, document)
+    words = []
+    j = 0
+    for i in initial.split():
+        k = i.split("\n")
+        for word in k:
+            words.append(word)
+    while j < len(words):
+        new_word = ""
+        if "XXX" in words[j]:
+            for letter in words[j-1]:
+                if (letter not in string.punctuation):
+                    new_word += "X"
+                else:
+                    new_word += letter
+            words[j-1] = new_word
+            new_word = ""
+            for letter in words[j+1]: 
+                if (letter not in string.punctuation):
+                    new_word += "X"
+                else:
+                    new_word += letter
+            words[j+1] = new_word
+            j += 2
+        else:
+            j += 1
+    return " ".join(words)
+
+print(censor_4(proprietary_terms, negative_words, email_four))
+    
