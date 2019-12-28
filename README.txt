@@ -1,0 +1,1 @@
+This is a Codecademy project in which I was tasked to censor emails.
