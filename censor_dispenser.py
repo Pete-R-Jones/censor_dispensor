@@ -5,6 +5,7 @@ email_three = open("email_three.txt", "r").read()
 email_four = open("email_four.txt", "r").read()
 
 import string
+import re
 
 def censor(phrase, document):
     new_word = ""
@@ -15,7 +16,26 @@ def censor(phrase, document):
                 new_word += "X"
             else:
                 new_word += letter
-        censored_doc = document.lower().replace(phrase.lower(), new_word)
+        insensitive_phrase = re.compile(re.escape(phrase), re.IGNORECASE)
+        censored_doc = insensitive_phrase.sub(new_word, document)
     return censored_doc
 
 print(censor("learning algorithms", email_one))
+
+def censor_many(phrases, document):
+    censored_doc = document
+    for i in range(len(phrases)):
+        new_word = ""
+        if phrases[i].lower() in document.lower():
+            for letter in phrases[i]:
+                if (letter not in string.punctuation) and (letter not in " "):
+                    new_word += "X"
+                else:
+                    new_word += letter
+        insensitive_phrase = re.compile(re.escape(phrases[i]), re.IGNORECASE)
+        censored_doc = insensitive_phrase.sub(new_word, censored_doc)
+    return censored_doc
+
+proprietary_terms = ["she", "personality matrix", "sense of self", "self-preservation", "learning algorithm", "her", "herself"]
+
+print(censor_many(proprietary_terms, email_two))
